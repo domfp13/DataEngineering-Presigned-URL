@@ -1,0 +1,120 @@
+# Created by Luis Enrique Fuentes Plata
+
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Retrieves a presigned URL of a private S3 bucket, so http resquests can upload files.
+  Authors: Luis Enrique Fuentes Plata
+
+Globals:
+  Function:
+    MemorySize: 128
+    Timeout: 900
+
+Parameters:
+  BucketName:
+    Type: String
+    Default: YourBucketName
+  TopicName:
+    Type: String
+    Default: YourTopicName
+  EndpointEmail:
+    Type: String
+    Default: YourEmail
+
+Resources:
+
+  # API Gateway
+  ApiGateway:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowMethods:
+          - GET
+          - POST
+          - DELETE
+          - OPTIONS
+        AllowHeaders:
+          - "*"
+        AllowOrigins:
+          - "*"
+
+  # Lambda
+  PresignedURLUploader:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: DE-PRESIGNED-URL-UPLOADER
+      Description: >
+        Retrieves a PRESIGNED URL of a private S3 bucket, so http post can upload files.
+      PackageType: Image
+      Environment:
+        Variables:
+          UploadBucket: !Ref S3Bucket
+          SNS_TOPIC_ARN: !Ref SNSTopic
+      Policies:
+        - S3WritePolicy:
+            BucketName: !Ref S3Bucket
+        - SNSPublishMessagePolicy:
+            TopicName: !GetAtt SNSTopic.TopicName
+      Events:
+        UploadAssetAPI:
+          Type: HttpApi
+          Properties:
+            Path: /uploads
+            Method: get
+            ApiId: !Ref ApiGateway
+    Metadata:
+      DockerTag: nodejs-runner
+      DockerContext: ./getSignedURL
+      Dockerfile: Dockerfile
+
+  # SNS
+  SNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Ref TopicName
+      Subscription:
+        - Endpoint: !Ref EndpointEmail
+          Protocol: email
+
+  # S3
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref BucketName
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - "*"
+            AllowedMethods:
+              - GET
+              - PUT
+              - HEAD
+            AllowedOrigins:
+              - "*"
+
+  # CloudWatch Logs
+  ProcessingFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${PresignedURLUploader}
+      RetentionInDays: 7
+
+Outputs:
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  APIendpoint:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com"
+  PresignedURLUploader:
+    Description: "Lambda Function ARN"
+    Value: !GetAtt PresignedURLUploader.Arn
+  PresignedURLUploaderIamRole:
+    Description: "Implicit IAM Role created for lambda function"
+    Value: !GetAtt PresignedURLUploaderRole.Arn
+  S3BucketName:
+    Description: "S3 bucket for application uploads"
+    Value: !Ref 'S3Bucket'
+  SNSTopicName:
+    Description: "SNS Topic ARN"
+    Value: !Ref SNSTopic

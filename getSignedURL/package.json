@@ -1,0 +1,19 @@
+{
+  "name": "Power Automate Uploader",
+  "version": "1.0.0",
+  "description": "Retrieves a PRESIGNED URL of a private S3 bucket",
+  "main": "app.js",
+  "author": "Luis Enrique Fuentes Plata, Pablo Reyna",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.1"
+  },
+  "scripts": {
+    "test": "mocha tests/unit/"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^8.2.1",
+    "aws-sdk": "^2.962.0"
+  }
+}
