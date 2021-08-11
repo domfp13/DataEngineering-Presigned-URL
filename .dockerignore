@@ -1,0 +1,12 @@
+### Created by Luis Enrique Fuentes Plata ###
+.aws-sam
+.git
+.gitignore
+.DS_Store
+LICENSE
+README.md
+.env
+.idea/
+.vscode
+template.yaml
+packaged-template.yaml
