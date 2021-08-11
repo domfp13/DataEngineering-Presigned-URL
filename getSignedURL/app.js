@@ -7,7 +7,7 @@ AWS.config.update({region: process.env.AWS_REGION})
 const s3 = new AWS.S3()
 
 // Change this value to adjust the signed URL's expiration
-const URL_EXPIRATION_SECONDS = 900
+const URL_EXPIRATION_SECONDS = 20
 
 // This object is used to validate if file should be process or not
 const filePath = {

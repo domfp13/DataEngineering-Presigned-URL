@@ -9,7 +9,7 @@ Description: >
 Globals:
   Function:
     MemorySize: 128
-    Timeout: 900
+    Timeout: 20
 
 Parameters:
   BucketName:
