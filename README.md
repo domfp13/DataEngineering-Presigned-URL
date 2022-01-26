@@ -9,6 +9,8 @@ This project contains source code and supporting files for a serverless applicat
 
 The application uses several AWS resources, including Lambda functions, SNS, S3, CloudWatch Logs and an API Gateway API. These resources are defined in the `template.yaml` file in this project. You can update the template to add AWS resources through the same deployment process that updates your application code.
 
+![Application Diagram](https://user-images.githubusercontent.com/7782876/151227559-81971f61-0fe1-4e4b-a6af-576014ada0a7.png)
+
 ## Run application locally
 
 The Serverless Application Model Command Line Interface (SAM CLI) is an extension of the AWS CLI that adds functionality for building and testing Lambda applications. It uses Docker to run your functions in an Amazon Linux environment that matches Lambda. It can also emulate your application's build environment and API.
