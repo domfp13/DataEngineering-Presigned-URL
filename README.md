@@ -30,7 +30,8 @@ This repo contains a `Makefile` to build and test (locally) and deploy your appl
 de-presigned-url$ make help
 ```
 
-CloudFormation will need a few variables in order to create the resources, the first thing you will need is an Elastic Cloud Repository, this will be used to host the container image, to create an ECR repository run the following command, and copy the URI (IMAGE-REPOSITORY) that its generated
+CloudFormation will need a few variables in order to create the resources, the first thing you will need is an Elastic Cloud Repository, this will be used to host the container image. 
+To create an ECR (Elastic Container Registry) run the following command, and copy the URI (IMAGE-REPOSITORY) that its generated
 in the `.env` file.
 ```bash
 aws ecr create-repository \
@@ -39,6 +40,11 @@ aws ecr create-repository \
     --image-scanning-configuration scanOnPush=true
 ```
 The ECR gives you a place to upload the application image so that [AWS CloudFormation](https://aws.amazon.com/cloudformation/) can access the container image when it runs the deploy process.
+If you want to get information about all available ECR you can run the following command:
+```bash
+aws ecr describe-repositories
+```
+
 
 CloudFormation will need 4 variables, you will need to fill out these variables under *.env* directory within this repository, variables are the following:
 * STACK-NAME=<YOUR_STACK_NAME>
