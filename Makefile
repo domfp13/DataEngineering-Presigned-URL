@@ -4,6 +4,8 @@ SHELL = /bin/bash
 
 include .env
 
+.DEFAULT_GOAL := help
+
 .PHONY: start
 start: ## (Local): Start API emulator
 	@ sam local start-api
@@ -37,7 +39,7 @@ deploy: ## (Cloud): Deploy code
 		--region ${REGION} \
 		--image-repository ${IMAGE-REPOSITORY-NODEJS}
 
-PHONY: undeploy
+.PHONY: undeploy
 undeploy: ## (Cloud): Undeploy code
 	@ aws s3 rm --recursive s3://${BUCKETNAME}/
 	@ aws cloudformation delete-stack --stack-name ${STACK-NAME}
@@ -45,5 +47,3 @@ undeploy: ## (Cloud): Undeploy code
 help:
 	@ echo "Please use \`make <target>' where <target> is one of"
 	@ perl -nle'print $& if m{^[a-zA-Z_-]+:.*?## .*$$}' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m  %-25s\033[0m %s\n", $$1, $$2}'
-
-.DEFAULT_GOAL := help
