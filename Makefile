@@ -21,6 +21,7 @@ clean: ## (Local): Clean Docker
 
 .PHONY: package
 package: ## (Cloud): Package code
+	@ cd ./getSignedURL/ && docker image build -t presignedurluploader:latest .
 	@ sam build
 	@ sam package --output-template-file packaged-template.yaml \
 		--region ${REGION} \

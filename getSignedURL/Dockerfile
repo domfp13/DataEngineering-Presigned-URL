@@ -1,6 +1,6 @@
-LABEL "Createded by"="Luis Enrirque Fuentes Plata"
-
 FROM public.ecr.aws/lambda/nodejs:14
+
+LABEL maintainer="Luis Enrique Fuentes Plata"
 
 COPY package.json ./
 
