@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Retrieves a PRESIGNED URL of a private S3 bucket",
   "main": "app.js",
-  "author": "Luis Enrique Fuentes Plata, Pablo Reyna",
+  "author": "Enrique Plata",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.21.1"
