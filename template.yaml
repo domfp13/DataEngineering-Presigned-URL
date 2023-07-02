@@ -49,7 +49,7 @@ Resources:
       PackageType: Image
       Environment:
         Variables:
-          UploadBucket: !Ref S3Bucket
+          BUCKET_NAME: !Ref S3Bucket
           SNS_TOPIC_ARN: !Ref SNSTopic
       Policies:
         - S3WritePolicy:

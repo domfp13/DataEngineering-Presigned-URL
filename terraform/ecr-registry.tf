@@ -4,7 +4,7 @@ resource "aws_ecr_repository" "de_presigned_url_ecr" {
   name = var.repository_name
 
   # Image tag mutability setting. Set to IMMUTABLE to ensure that image tags cannot be overwritten.
-  image_tag_mutability = "IMMUTABLE"
+  image_tag_mutability = "MUTABLE"
 
   # Force delete the repository even if it contains images
   force_delete = true

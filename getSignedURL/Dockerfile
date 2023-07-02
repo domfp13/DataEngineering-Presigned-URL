@@ -4,7 +4,7 @@ LABEL maintainer="Luis Enrique Fuentes Plata"
 
 COPY package.json ./
 
-RUN npm install
+RUN npm install csv-parser
 
 COPY app.js ./
 

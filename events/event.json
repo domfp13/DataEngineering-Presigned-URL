@@ -1,7 +1,7 @@
 {
   "body": "{\"message\": \"hello world\"}",
   "resource": "/{proxy+}",
-  "path": "/uploads",
+  "path": "/de_presigned_url_api_gateway_stage_qc/files",
   "httpMethod": "GET",
   "isBase64Encoded": false,
   "queryStringParameters": {
@@ -32,7 +32,7 @@
     "X-Forwarded-For": "127.0.0.1, 127.0.0.2",
     "X-Forwarded-Port": "443",
     "X-Forwarded-Proto": "https",
-    "file-name": "Tester.xlsx"
+    "file-name": "Tester1.xlsx"
   },
   "requestContext": {
     "accountId": "123456789012",

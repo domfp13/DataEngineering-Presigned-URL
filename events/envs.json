@@ -1,0 +1,6 @@
+{
+    "PresignedURLUploader": {
+        "BUCKET_NAME": "snowflake-de-presigned",
+        "SNS_TOPIC_ARN": "arn:aws:sns:us-east-1:123456789012:Snowflake-Upload-Topic"
+    }
+}

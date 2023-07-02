@@ -1,6 +1,6 @@
 # Creating a role so Lambda can talk to S3
 resource "aws_iam_role" "de_presigned_url_lambda_s3_role" {
-  name = "LambdaS3Role"
+  name = "de_presigned_url_lambda_s3_role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -16,7 +16,7 @@ resource "aws_iam_role" "de_presigned_url_lambda_s3_role" {
 
 # Creating a policy so Lambda can talk to S3
 resource "aws_iam_role_policy" "de_presigned_url_lambda_s3_policy" {
-  name = "LambdaS3Policy"
+  name = "de_presigned_url_lambda_s3_policy"
   role = aws_iam_role.de_presigned_url_lambda_s3_role.id
 
   policy = jsonencode({
@@ -42,6 +42,7 @@ resource "aws_iam_role_policy" "de_presigned_url_lambda_s3_policy" {
 
 # Creating a policy so Lambda can log events in CloudWatch Group
 resource "aws_iam_role_policy" "de_presigned_url_lambda_lambda_logging_policy" {
+  name = "de_presigned_url_lambda_lambda_logging_policy"
   role = aws_iam_role.de_presigned_url_lambda_s3_role.id
 
   policy = jsonencode({
@@ -60,7 +61,7 @@ resource "aws_iam_role_policy" "de_presigned_url_lambda_lambda_logging_policy" {
 
 # Creating a role so API Gateway talks to lambda function
 resource "aws_iam_role" "de_presigned_url_api_gateway_role" {
-  name = "api_gateway_role"
+  name = "de_presigned_url_api_gateway_role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -76,9 +77,9 @@ resource "aws_iam_role" "de_presigned_url_api_gateway_role" {
   })
 }
 
-# Creating a policy so API Gateway talks to lambda function
+# IAM Policy allowing API Gateway to invoke the Lambda function
 resource "aws_iam_role_policy" "de_presigned_url_api_gateway_policy" {
-  name = "api_gateway_policy"
+  name = "de_presigned_url_api_gateway_policy"
   role = aws_iam_role.de_presigned_url_api_gateway_role.id
 
   policy = jsonencode({
@@ -97,6 +98,7 @@ resource "aws_iam_role_policy" "de_presigned_url_api_gateway_policy" {
 
 # Creating a policy so API Gateway can Log events in CloudWatch Group
 resource "aws_iam_role_policy" "de_presigned_url_api_gateway_logging_policy" {
+  name = "de_presigned_url_api_gateway_logging_policy"
   role = aws_iam_role.de_presigned_url_api_gateway_role.id
 
   policy = jsonencode({

@@ -12,8 +12,8 @@ start: ## (Local): Start API emulator
 
 .PHONY: run
 run: ## (Local): Test locally
-	@ sam build
-	@ sam local invoke PresignedURLUploader --event events/event.json
+	@ sam build --template template.yaml --manifest getSignedURL/package.json
+	@ sam local invoke PresignedURLUploader --event events/event.json --env-vars events/envs.json
 
 .PHONY: clean
 clean: ## (Local): Clean Docker
