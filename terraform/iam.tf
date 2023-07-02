@@ -32,8 +32,8 @@ resource "aws_iam_role_policy" "de_presigned_url_lambda_s3_policy" {
           "s3:DeleteObject"
         ],
         Resource = [
-          "arn:aws:s3:::${var.repository_name}/*",
-          "arn:aws:s3:::${var.repository_name}"
+          "arn:aws:s3:::${var.bucket_name}/*",
+          "arn:aws:s3:::${var.bucket_name}"
         ]
       }
     ]

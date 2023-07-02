@@ -4,11 +4,13 @@ Overall, this project offers a serverless solution for securely uploading files 
 ## Description
 This project aims to create a serverless infrastructure using Terraform. The infrastructure includes an API Gateway, a Lambda function, an SNS topic, and CloudWatch Logs.
 
-The main purpose of the project is to provide a presigned URL retrieval mechanism for uploading files to a private S3 bucket through HTTP requests. The API Gateway acts as the entry point for these requests, while the Lambda function generates the presigned URL and handles the file upload process. The S3 bucket serves as the storage location for the uploaded files.
+The main purpose of the project is to provide a presigned URL retrieval mechanism for uploading files to a private S3 bucket through HTTPs requests. The API Gateway acts as the entry point for these requests, while the Lambda function generates the presigned URL and handles the file upload process. The S3 bucket serves as the storage location for the uploaded files.
 
 Additionally, the project utilizes an SNS topic to send notifications related to the file uploads. Subscribers can receive email notifications by subscribing their email addresses to the SNS topic.
 
 This project aims to provision and manage infrastructure resources using Terraform. It provides a convenient way to automate the creation and management of infrastructure components.
+
+Note: This code does not provition an S3 bucket, for my use case a bucket was already created without using Terraform, therefore, this is not reacreating the resource since S3 buckets are globally available.
 
 ## Prerequisites
 
@@ -16,35 +18,47 @@ Before you begin, ensure that you have the following prerequisites installed:
 
 - [Docker](https://www.docker.com/): Latest version if possible
 - [Docker-Compose](https://docs.docker.com/compose/): Latest version if possible
+- [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html): Setup aws credentials.
 
 ## Getting Started
 
 Follow these instructions to get the project up and running:
 
-1. Clone the repository: `git clone https://github.com/your-username/your-repo.git`
-2. Change into the project directory: `cd your-repo`
-3. Change into the project's Terraform subfolder: `cd terraform`
-# TODO
+### 1.- Setup ECR (Elastic Container Registry)
 
-add the connection to AWS
-use the Makefile to run your target recepies
+1. Clone the repository : `git clone https://.../lambda-presigned-url.git && cd lambda-presigned-url`
+    * Change directory and move to `cd terraform`
+    * Change variables in the `terraform.tfvars` file, make sure you change the name of the bucket and the email. 
+    * Initialize terraform: `make tf-init`
+    * Create ECR repository: `make tf-apply-ecr` your prompt should show the arn and url, make sure you copy them since we will need them later.
 
+### 2.- Upload local Docker image to remote Repository (ECR)
+1. Change directoy `cd ../getSignedURL`
+2. Build the Docker image
+    ```
+    docker build --no-cache -t de-presigned-url-lambda-image:v1 .
+    ```
+3. Authenticate Docker to Amazon ECR, before running chage `<region>` & `<account-id>`
+    ```
+    aws ecr get-login-password --region <region> | docker login --username AWS --password-stdin <account-id>.dkr.ecr.<region>.amazonaws.com
+    ```
+4. Tag the Docker Image with the ECR Repository URL, change `<account-id>`
+    ```
+    docker tag de-presigned-url-lambda-image:v1 <account-id>.dkr.ecr.us-east-1.amazonaws.com/de_presigned_url_ecr:v1
+    ```
+5. Push the Docker Image to ECR, change `<account-id>`
+    ```
+    docker push <account-id>.dkr.ecr.us-east-1.amazonaws.com/de_presigned_url_ecr:v1
+    ```
+### 3.- Deploy all the services
+1. Change directory to terraform `cd ../terraform`
+2. Run
+    ```
+    make tf-apply
+    ```
+3. Inside of the `events` folder there is a sample `mapping.csv` file, upload to the root of the S3 bucket with the name of the files you would like to load.
 
-3. Run `terraform init` to initialize the project and download the necessary provider plugins.
-4. Customize the configuration files to match your desired infrastructure setup.
-5. Run `terraform plan` to review the planned changes and verify the configuration.
-6. Run `terraform apply` to create or modify the infrastructure based on your configuration.
-7. Access and test your infrastructure resources.
-
-## Configuration
-
-The project configuration is managed through Terraform. You can find the main configuration files in the following locations:
-
-- `main.tf`: Contains the main infrastructure resources and their configurations.
-- `variables.tf`: Defines input variables that can be customized to adjust the infrastructure setup.
-- `outputs.tf`: Specifies the output values exposed by the infrastructure resources.
-
-Feel free to modify these files according to your requirements. Additionally, you can create additional files and modules as needed.
+Note: The output should display all the arns and URLs of the services.
 
 ## Additional Resources
 
@@ -56,14 +70,11 @@ Here are some additional resources that can help you learn more about Terraform:
 
 ## Contributing
 
-If you would like to contribute to this project, please follow the guidelines outlined in [CONTRIBUTING.md](CONTRIBUTING.md).
+If you would like to contribute to this project, please follow contact me.
 
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
 
-## Acknowledgments
-
-- Mention any individuals, organizations, or resources that you found helpful during your work on this project.
-
-Feel free to customize this template according to your project's specific details and requirements.
+## Authors
+* **Enrique Plata**

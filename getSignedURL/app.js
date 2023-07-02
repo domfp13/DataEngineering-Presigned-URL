@@ -71,6 +71,8 @@ async function parseCSV(s3Stream) {
  *
  */
 const getUploadURL = async function (fileName, path, bucketName) {
+    //TODO: investigate issue
+
     // instanciate S3 client
     const s3 = new AWS.S3()
 
@@ -84,15 +86,21 @@ const getUploadURL = async function (fileName, path, bucketName) {
         ContentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     };
 
-    // This will keep the longs in CloudWatch
-    console.log('Params: ', s3Params);
-
     const uploadURL = await s3.getSignedUrlPromise('putObject', s3Params);
 
-    return JSON.stringify({
-        uploadURL: uploadURL,
-        Key
-    });
+    console.log('INFO:', uploadURL);
+
+    return {
+        statusCode: 200,
+        body: JSON.stringify({
+          uploadURL: uploadURL,
+          Key: Key
+        })
+    };
+    // return JSON.stringify({
+    //     uploadURL: uploadURL,
+    //     Key
+    // });
 }
 
 exports.lambdaHandler = async (event, context, callback) => {
@@ -141,10 +149,24 @@ exports.lambdaHandler = async (event, context, callback) => {
 
         } else {
             console.log("File name is invalid");
-        }
 
+            const errorMessage = 'Unsupported file, is not part of the mapping.csv list';
+            console.error('Error:', errorMessage);
+
+            // Return an HTTP error response
+            return {
+                statusCode: 415,
+                body: JSON.stringify({ error: errorMessage }),
+            };
+        }
+        
     } catch (error) {
         console.error('Error:', error);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: error }),
+        };
         throw error;
+
     }
 }
