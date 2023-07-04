@@ -12,6 +12,12 @@ resource "aws_iam_role" "de_presigned_url_lambda_s3_role" {
       }
     }]
   })
+
+  tags = {
+    Owner = "Enrique Plata"
+    Team  = "Data Engineering Team - DW"
+  }
+
 }
 
 # Creating a policy so Lambda can talk to S3
@@ -75,6 +81,12 @@ resource "aws_iam_role" "de_presigned_url_api_gateway_role" {
       }
     ]
   })
+
+  tags = {
+    Owner = "Enrique Plata"
+    Team  = "Data Engineering Team - DW"
+  }
+
 }
 
 # IAM Policy allowing API Gateway to invoke the Lambda function

@@ -44,12 +44,17 @@ resource "aws_lambda_function" "de_presigned_url_lambda" {
       BUCKET_NAME = var.bucket_name # S3 bucket name
     }
   }
+
+  tags = {
+    Owner = "Enrique Plata"
+    Team  = "Data Engineering Team - DW"
+  }
 }
 
 # Create an HTTP API Gateway
 resource "aws_apigatewayv2_api" "de_presigned_url_api_gateway" {
   # Name of the API
-  name = "de_presigned_url_api_gateway"
+  name        = "de_presigned_url_api_gateway"
   description = "Data Engineering API Gateway for retrieving a PRESIGNED URL of a private S3 bucket, so and HTTPS PUT can upload files to S3 bucket."
 
   # Protocol type for the API
@@ -60,6 +65,11 @@ resource "aws_apigatewayv2_api" "de_presigned_url_api_gateway" {
     allow_headers = ["*"]   # Allow file-name HEADERS
     allow_methods = ["GET"] # Allow specified methods
     allow_origins = ["*"]   # Allow all origins
+  }
+
+  tags = {
+    Owner = "Enrique Plata"
+    Team  = "Data Engineering Team - DW"
   }
 }
 

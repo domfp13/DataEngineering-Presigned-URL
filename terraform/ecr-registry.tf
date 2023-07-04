@@ -14,4 +14,9 @@ resource "aws_ecr_repository" "de_presigned_url_ecr" {
     # Enable image scanning on push, this ensures images are scanned on being pushed to the repository.
     scan_on_push = true
   }
+
+  tags = {
+    Owner = "Enrique Plata"
+    Team  = "Data Engineering Team - DW"
+  }
 }
