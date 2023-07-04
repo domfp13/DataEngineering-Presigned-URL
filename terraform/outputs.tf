@@ -21,9 +21,3 @@ output "api_gateway_endpoint_url" {
   description = "The endpoint URL of the API Gateway"
   value       = aws_apigatewayv2_api.de_presigned_url_api_gateway.api_endpoint
 }
-
-# Output the ARN of the SNS Topic
-output "sns_topic_arn" {
-  description = "SNS Topic ARN"
-  value       = aws_sns_topic.de_presigned_url_sns.arn
-}

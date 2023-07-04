@@ -1,6 +1,6 @@
 FROM public.ecr.aws/lambda/nodejs:14
 
-LABEL maintainer="Luis Enrique Fuentes Plata"
+LABEL maintainer="Enrique Plata"
 
 COPY package.json ./
 

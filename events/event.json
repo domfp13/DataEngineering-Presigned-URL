@@ -32,7 +32,7 @@
     "X-Forwarded-For": "127.0.0.1, 127.0.0.2",
     "X-Forwarded-Port": "443",
     "X-Forwarded-Proto": "https",
-    "file-name": "Tester1.xlsx"
+    "file-name": "Otherfile.csv"
   },
   "requestContext": {
     "accountId": "123456789012",

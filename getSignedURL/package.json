@@ -1,7 +1,7 @@
 {
   "name": "Power Automate Uploader",
   "version": "1.0.0",
-  "description": "Retrieves a PRESIGNED URL of a private S3 bucket",
+  "description": "Retrieves a PRESIGNED URL of a private S3 bucket, created by: Enrique Plata",
   "main": "app.js",
   "author": "Enrique Plata",
   "license": "MIT",

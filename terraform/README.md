@@ -1,16 +1,16 @@
-# Data Engineering AWS API Gateway to S3
-Overall, this project offers a serverless solution for securely uploading files to an S3 bucket and enables the integration of event-driven notifications using AWS services.
+# Data Engineering AWS Lambda presigned URL for S3
+Overall, this project offers a serverless solution for securely uploading files to an S3 bucket and enables the integration of event-driven processing in AWS services.
 
 ## Description
-This project aims to create a serverless infrastructure using Terraform. The infrastructure includes an API Gateway, a Lambda function, an SNS topic, and CloudWatch Logs.
+This project aims to create a serverless infrastructure using Terraform. The infrastructure includes an API Gateway, a Lambda function, and CloudWatch Logs.
 
 The main purpose of the project is to provide a presigned URL retrieval mechanism for uploading files to a private S3 bucket through HTTPs requests. The API Gateway acts as the entry point for these requests, while the Lambda function generates the presigned URL and handles the file upload process. The S3 bucket serves as the storage location for the uploaded files.
 
-Additionally, the project utilizes an SNS topic to send notifications related to the file uploads. Subscribers can receive email notifications by subscribing their email addresses to the SNS topic.
-
 This project aims to provision and manage infrastructure resources using Terraform. It provides a convenient way to automate the creation and management of infrastructure components.
 
-Note: This code does not provition an S3 bucket, for my use case a bucket was already created without using Terraform, therefore, this is not reacreating the resource since S3 buckets are globally available.
+Note: This code does not provision an AWS S3 Bucket, for our use case a bucket was already created without using Terraform, therefore, this is not reacreating the resource since S3 buckets are globally available.
+
+![Image description](../diagrams/latest_diagram.png)
 
 ## Prerequisites
 
@@ -22,15 +22,15 @@ Before you begin, ensure that you have the following prerequisites installed:
 
 ## Getting Started
 
-Follow these instructions to get the project up and running:
+Follow the instructions to get the project up and running (This instructins are based on a UNIX OS system), if you are using Windows follow the instructions in the Makefile file:
 
 ### 1.- Setup ECR (Elastic Container Registry)
 
 1. Clone the repository : `git clone https://.../lambda-presigned-url.git && cd lambda-presigned-url`
-    * Change directory and move to `cd terraform`
-    * Change variables in the `terraform.tfvars` file, make sure you change the name of the bucket and the email. 
-    * Initialize terraform: `make tf-init`
-    * Create ECR repository: `make tf-apply-ecr` your prompt should show the arn and url, make sure you copy them since we will need them later.
+    * Change directory: `cd terraform`
+    * Change variables in the `terraform.tfvars` file, make sure you change the name of the `bucket_name` variable.
+    * If this is the first time running this project, then initialize terraform: `make tf-init`
+    * Create ECR repository: `make tf-apply-ecr`, after running the command the prompt should show the arn and url of the ECR, make sure you copy them since we will need them later.
 
 ### 2.- Upload local Docker image to remote Repository (ECR)
 1. Change directoy `cd ../getSignedURL`
@@ -56,9 +56,9 @@ Follow these instructions to get the project up and running:
     ```
     make tf-apply
     ```
-3. Inside of the `events` folder there is a sample `mapping.csv` file, upload to the root of the S3 bucket with the name of the files you would like to load.
+3. Inside of the `events` folder there is a sample `mapping.csv` file, upload to the root of the S3 bucket with the names of the files you would like lambda to accept and load.
 
-Note: The output should display all the arns and URLs of the services.
+Note: The output should display all the arns and URLs of the services after Terrafor finishes deploying all the services.
 
 ## Additional Resources
 

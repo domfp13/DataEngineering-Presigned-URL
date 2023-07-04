@@ -71,19 +71,25 @@ async function parseCSV(s3Stream) {
  *
  */
 const getUploadURL = async function (fileName, path, bucketName) {
-    //TODO: investigate issue
-
     // instanciate S3 client
     const s3 = new AWS.S3()
 
     const Key = path + `${fileName}`;
+
+    // Determine content type based on file extension
+    let ContentType;
+    if (fileName.endsWith('.xlsx')) {
+        ContentType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    } else if (fileName.endsWith('.csv')) {
+        ContentType = 'text/csv';
+    }
 
     // Get signed URL from S3
     const s3Params = {
         Bucket: bucketName,
         Key,
         Expires: URL_EXPIRATION_SECONDS,
-        ContentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        ContentType,
     };
 
     const uploadURL = await s3.getSignedUrlPromise('putObject', s3Params);
@@ -96,7 +102,8 @@ const getUploadURL = async function (fileName, path, bucketName) {
           uploadURL: uploadURL,
           Key: Key
         })
-    };
+    };    
+    
     // return JSON.stringify({
     //     uploadURL: uploadURL,
     //     Key
@@ -119,7 +126,7 @@ exports.lambdaHandler = async (event, context, callback) => {
         }
 
         // Get the file name from the event
-        const { BUCKET_NAME, SNS_TOPIC_ARN } = process.env;
+        const { BUCKET_NAME } = process.env;
         const bucketName = BUCKET_NAME;
         
         // Inside of the S3 bucket should be a file called mapping.csv which is used for validation of the files that are allowed to be uploaded
@@ -166,7 +173,5 @@ exports.lambdaHandler = async (event, context, callback) => {
             statusCode: 500,
             body: JSON.stringify({ error: error }),
         };
-        throw error;
-
     }
 }

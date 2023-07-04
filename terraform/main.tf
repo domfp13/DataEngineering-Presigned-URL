@@ -41,8 +41,7 @@ resource "aws_lambda_function" "de_presigned_url_lambda" {
   # Set environment variables for the Lambda function, this are available as environment variables in the Lambda function
   environment {
     variables = {
-      BUCKET_NAME   = var.bucket_name                        # S3 bucket name
-      SNS_TOPIC_ARN = aws_sns_topic.de_presigned_url_sns.arn # SNS Topic ARN
+      BUCKET_NAME = var.bucket_name # S3 bucket name
     }
   }
 }
@@ -51,6 +50,7 @@ resource "aws_lambda_function" "de_presigned_url_lambda" {
 resource "aws_apigatewayv2_api" "de_presigned_url_api_gateway" {
   # Name of the API
   name = "de_presigned_url_api_gateway"
+  description = "Data Engineering API Gateway for retrieving a PRESIGNED URL of a private S3 bucket, so and HTTPS PUT can upload files to S3 bucket."
 
   # Protocol type for the API
   protocol_type = "HTTP"
