@@ -1,7 +1,7 @@
 {
   "body": "{\"message\": \"hello world\"}",
   "resource": "/{proxy+}",
-  "path": "/de_presigned_url_api_gateway_stage_qc/files",
+  "path": "/de_presigned_url_api_gateway_stage_prod/files",
   "httpMethod": "GET",
   "isBase64Encoded": false,
   "queryStringParameters": {
@@ -32,7 +32,7 @@
     "X-Forwarded-For": "127.0.0.1, 127.0.0.2",
     "X-Forwarded-Port": "443",
     "X-Forwarded-Proto": "https",
-    "file-name": "Otherfile.csv"
+    "file-name": "Tester1.xlsx"
   },
   "requestContext": {
     "accountId": "123456789012",
@@ -54,7 +54,7 @@
       "userAgent": "Custom User Agent String",
       "user": null
     },
-    "path": "/uploads",
+    "path": "/files",
     "resourcePath": "/{proxy+}",
     "httpMethod": "GET",
     "apiId": "1234567890",
