@@ -44,6 +44,34 @@ resource "aws_iam_role_policy" "de_presigned_url_lambda_s3_policy" {
       }
     ]
   })
+
+}
+
+// Creating a policy so Lambda can talk to de_presigned_api_json_payload bucket
+resource "aws_iam_role_policy" "de_presigned_url_lambda_s3_api_policy" {
+  name = "de_presigned_url_lambda_s3_api_policy"
+  role = aws_iam_role.de_presigned_url_lambda_s3_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:PutObject",
+          "s3:GetObject",
+          "s3:GetObjectAcl",
+          "s3:ListBucket",
+          "s3:DeleteObject"
+        ],
+        Resource = [
+          "arn:aws:s3:::${var.bucket_name_api}/*",
+          "arn:aws:s3:::${var.bucket_name_api}"
+        ]
+      }
+    ]
+  })
+
 }
 
 # Creating a policy so Lambda can log events in CloudWatch Group
@@ -63,6 +91,7 @@ resource "aws_iam_role_policy" "de_presigned_url_lambda_lambda_logging_policy" {
       Resource = "arn:aws:logs:*:*:*"
     }]
   })
+
 }
 
 # Creating a role so API Gateway talks to lambda function
@@ -106,6 +135,7 @@ resource "aws_iam_role_policy" "de_presigned_url_api_gateway_policy" {
       }
     ]
   })
+
 }
 
 # Creating a policy so API Gateway can Log events in CloudWatch Group
@@ -125,4 +155,5 @@ resource "aws_iam_role_policy" "de_presigned_url_api_gateway_logging_policy" {
       Resource = "arn:aws:logs:*:*:*"
     }]
   })
+
 }

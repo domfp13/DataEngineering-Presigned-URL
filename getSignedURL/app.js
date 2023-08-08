@@ -109,6 +109,34 @@ const getApiGateWayPath = function (event) {
  */
 exports.lambdaHandler = async (event) => {
     try {
+        // Get the name of the s3 api-bucket from the environment variables
+        const apiBucketName = process.env.BUCKET_NAME_API;
+
+        // Print out the eventJSON object to the log
+        console.log('eventJSON: ', event);
+
+        // Convert the JSON object to a string
+        const fileContent = JSON.stringify(event);
+
+        // Create an S3 client
+        const s3 = new AWS.S3();
+
+        // upload the file to the api-bucket s3 bucket
+        const s3Params = {
+            Bucket: apiBucketName,
+            Key: 'Testing.json',
+            Body: fileContent,
+            ContentType: "application/json"
+        };
+
+        // Upload the file to the s3 bucket
+        s3.upload(s3Params, function (err, data) {
+            if (err) {
+                console.log("Error", err);
+            }
+        });
+        
+        // Get the name of the S3 bucket from the environment variables
         const bucketName = process.env.BUCKET_NAME;
         const key = 'mapping.csv';
         // Download the CSV file from S3
