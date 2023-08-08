@@ -33,7 +33,7 @@ resource "aws_lambda_function" "de_presigned_url_lambda" {
   description = "Retrieves a PRESIGNED URL of a private S3 bucket, so and HTTPS POST can upload files directly to S3 bucket."
 
   # Reference the ECR repository and specify the image tag for Lambda's container image
-  image_uri = "${aws_ecr_repository.de_presigned_url_ecr.repository_url}:v1"
+  image_uri = "${aws_ecr_repository.de_presigned_url_ecr.repository_url}:v6"
 
   # CloudWatch log group
   publish = true
@@ -41,7 +41,8 @@ resource "aws_lambda_function" "de_presigned_url_lambda" {
   # Set environment variables for the Lambda function, this are available as environment variables in the Lambda function
   environment {
     variables = {
-      BUCKET_NAME = var.bucket_name # S3 bucket name
+      BUCKET_NAME = var.bucket_name, # S3 bucket name
+      BUCKET_NAME_API = var.bucket_name_api # S3 bucket name
     }
   }
 

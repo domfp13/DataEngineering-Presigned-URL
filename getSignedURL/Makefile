@@ -18,10 +18,10 @@
 
 .PHONY: deploy-ecr
 deploy-ecr: ## Deploy ECR to AWS
-	@ docker build --no-cache -t de-presigned-url-lambda-image:v1 .
+	@ docker build --no-cache -t de-presigned-url-lambda-image:v6 .
 	@ aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 833695691939.dkr.ecr.us-east-1.amazonaws.com
-	@ docker tag de-presigned-url-lambda-image:v1 833695691939.dkr.ecr.us-east-1.amazonaws.com/de_presigned_url_ecr:v1
-	@ docker push 833695691939.dkr.ecr.us-east-1.amazonaws.com/de_presigned_url_ecr:v1
+	@ docker tag de-presigned-url-lambda-image:v6 833695691939.dkr.ecr.us-east-1.amazonaws.com/de_presigned_url_ecr:v6
+	@ docker push 833695691939.dkr.ecr.us-east-1.amazonaws.com/de_presigned_url_ecr:v6
 
 help:
 	@ echo "Please use \`make <target>' where <target> is one of"
