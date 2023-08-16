@@ -179,6 +179,3 @@ resource "aws_iam_user_policy" "de_presigned_url_local_env_user_policy" {
   })
 }
 
-resource "aws_iam_access_key" "de_presigned_url_local_env_user_access_key" {
-  user = aws_iam_user.de_presigned_url_local_env_user.name
-}
