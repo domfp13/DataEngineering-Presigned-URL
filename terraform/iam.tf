@@ -17,7 +17,6 @@ resource "aws_iam_role" "de_presigned_url_lambda_s3_role" {
     Owner = "Enrique Plata"
     Team  = "Data Engineering Team - DW"
   }
-
 }
 
 # Creating a policy so Lambda can talk to S3
@@ -44,7 +43,6 @@ resource "aws_iam_role_policy" "de_presigned_url_lambda_s3_policy" {
       }
     ]
   })
-
 }
 
 // Creating a policy so Lambda can talk to de_presigned_api_json_payload bucket
@@ -71,7 +69,6 @@ resource "aws_iam_role_policy" "de_presigned_url_lambda_s3_api_policy" {
       }
     ]
   })
-
 }
 
 # Creating a policy so Lambda can log events in CloudWatch Group
@@ -91,7 +88,6 @@ resource "aws_iam_role_policy" "de_presigned_url_lambda_lambda_logging_policy" {
       Resource = "arn:aws:logs:*:*:*"
     }]
   })
-
 }
 
 # Creating a role so API Gateway talks to lambda function
@@ -115,7 +111,6 @@ resource "aws_iam_role" "de_presigned_url_api_gateway_role" {
     Owner = "Enrique Plata"
     Team  = "Data Engineering Team - DW"
   }
-
 }
 
 # IAM Policy allowing API Gateway to invoke the Lambda function
@@ -135,7 +130,6 @@ resource "aws_iam_role_policy" "de_presigned_url_api_gateway_policy" {
       }
     ]
   })
-
 }
 
 # Creating a policy so API Gateway can Log events in CloudWatch Group
@@ -155,5 +149,34 @@ resource "aws_iam_role_policy" "de_presigned_url_api_gateway_logging_policy" {
       Resource = "arn:aws:logs:*:*:*"
     }]
   })
+}
 
+# Creating a user so Local Testing can access the event in CloudWatch de_presigned_url_lambda_log_group group
+resource "aws_iam_user" "de_presigned_url_local_env_user" {
+  name = "de_presigned_url_local_env_user"
+  tags = {
+    Owner = "Enrique Plata"
+    Team  = "Data Engineering Team - DW"
+  }
+}
+
+# Creating a read only policy so de_presigned_url_local_env_user can access the event in CloudWatch de_presigned_url_lambda_log_group group
+resource "aws_iam_role_policy" "de_presigned_url_local_env_cloudwatch_policy" {
+  name = "de_presigned_url_local_env_cloudwatch_policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Action = [
+        "logs:GetLogEvents"
+      ],
+      Effect   = "Allow",
+      Resource = aws_cloudwatch_log_group.example.arn
+    }]
+  })
+}
+
+resource "aws_iam_user_policy_attachment" "de_presigned_url_local_env_user_attach" {
+  user       = aws_iam_user.de_presigned_url_local_env_user.name
+  policy_arn = aws_iam_policy.de_presigned_url_local_env_cloudwatch_policy.arn
 }

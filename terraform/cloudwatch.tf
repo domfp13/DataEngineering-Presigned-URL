@@ -17,5 +17,4 @@ resource "aws_cloudwatch_log_group" "de_presigned_url_api_gateway_log_group" {
     Owner = "Enrique Plata"
     Team  = "Data Engineering Team - DW"
   }
-
 }
