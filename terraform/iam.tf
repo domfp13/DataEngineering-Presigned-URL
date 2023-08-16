@@ -160,23 +160,25 @@ resource "aws_iam_user" "de_presigned_url_local_env_user" {
   }
 }
 
-# Creating a read only policy so de_presigned_url_local_env_user can access the event in CloudWatch de_presigned_url_lambda_log_group group
-resource "aws_iam_role_policy" "de_presigned_url_local_env_cloudwatch_policy" {
-  name = "de_presigned_url_local_env_cloudwatch_policy"
+# Creating a policy so Local Testing can access the event in CloudWatch de_presigned_url_lambda_log_group group
+resource "aws_iam_user_policy" "de_presigned_url_local_env_user_policy" {
+  name = "de_presigned_url_local_env_user_policy"
+  user = aws_iam_user.de_presigned_url_local_env_user.name
 
   policy = jsonencode({
     Version = "2012-10-17",
-    Statement = [{
-      Action = [
-        "logs:GetLogEvents"
-      ],
-      Effect   = "Allow",
-      Resource = aws_cloudwatch_log_group.example.arn
-    }]
+    Statement = [
+      {
+        Action = [
+          "logs:GetLogEvents",
+        ],
+        Effect   = "Allow",
+        Resource = aws_cloudwatch_log_group.de_presigned_url_lambda_log_group.arn
+      }
+    ]
   })
 }
 
-resource "aws_iam_user_policy_attachment" "de_presigned_url_local_env_user_attach" {
-  user       = aws_iam_user.de_presigned_url_local_env_user.name
-  policy_arn = aws_iam_policy.de_presigned_url_local_env_cloudwatch_policy.arn
+resource "aws_iam_access_key" "de_presigned_url_local_env_user_access_key" {
+  user = aws_iam_user.de_presigned_url_local_env_user.name
 }

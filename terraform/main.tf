@@ -41,7 +41,7 @@ resource "aws_lambda_function" "de_presigned_url_lambda" {
   # Set environment variables for the Lambda function, this are available as environment variables in the Lambda function
   environment {
     variables = {
-      BUCKET_NAME = var.bucket_name, # S3 bucket name
+      BUCKET_NAME     = var.bucket_name,    # S3 bucket name
       BUCKET_NAME_API = var.bucket_name_api # S3 bucket name
     }
   }
