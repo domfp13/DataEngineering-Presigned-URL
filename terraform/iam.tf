@@ -170,11 +170,11 @@ resource "aws_iam_user_policy" "de_presigned_url_local_env_user_policy" {
     Statement = [
       {
         Action = [
-          "logs:DescribeLogGroups",
-          "logs:GetLogEvents"
+          "logs:GetLogEvents",
+          "logs:DescribeLogGroups"
         ],
         Effect   = "Allow",
-        Resource = aws_cloudwatch_log_group.de_presigned_url_lambda_log_group.arn
+        Resource = "arn:aws:logs:*:*:*"
       }
     ]
   })
