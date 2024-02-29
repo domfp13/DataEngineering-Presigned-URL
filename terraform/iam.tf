@@ -174,7 +174,7 @@ resource "aws_iam_user_policy" "de_presigned_url_local_env_user_policy" {
           "logs:DescribeLogGroups"
         ],
         Effect   = "Allow",
-        Resource = "arn:aws:logs:*:*:*"
+        Resource = aws_cloudwatch_log_group.de_presigned_url_lambda_log_group.arn
       }
     ]
   })
